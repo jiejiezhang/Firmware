@@ -134,14 +134,14 @@ protected:
 	 *
 	 * @param address	The new bus address to set.
 	 */
-	void		set_address(uint16_t address)
+	void		set_address(uint8_t address)
 	{
 		_address = address;
 		_device_id.devid_s.address = _address;
 	}
 
 private:
-	uint16_t		_address;
+	uint8_t		_address;
 	uint32_t		_frequency;
 	px4_i2c_dev_t		*_dev;
 
