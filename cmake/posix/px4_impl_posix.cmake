@@ -37,10 +37,7 @@
 #
 # 	OS Specific Functions
 #
-#		* px4_posix_add_firmware
 #		* px4_posix_generate_builtin_commands
-#		* px4_posix_add_export
-#		* px4_posix_generate_romfs
 #
 # 	Required OS Interface Functions
 #
@@ -79,6 +76,7 @@ function(px4_posix_generate_builtin_commands)
 		MULTI_VALUE MODULE_LIST
 		REQUIRED MODULE_LIST OUT
 		ARGN ${ARGN})
+
 	set(builtin_apps_string)
 	set(builtin_apps_decl_string)
 	set(command_count 0)
@@ -101,10 +99,8 @@ function(px4_posix_generate_builtin_commands)
 			math(EXPR command_count "${command_count}+1")
 		endif()
 	endforeach()
-	configure_file(${PX4_SOURCE_DIR}/src/platforms/apps.cpp.in
-		${OUT}.cpp)
-	configure_file(${PX4_SOURCE_DIR}/src/platforms/apps.h.in
-		${OUT}.h)
+	configure_file(${PX4_SOURCE_DIR}/src/platforms/apps.cpp.in ${OUT}.cpp)
+	configure_file(${PX4_SOURCE_DIR}/src/platforms/apps.h.in ${OUT}.h)
 endfunction()
 
 #=============================================================================
@@ -168,21 +164,20 @@ function(px4_os_add_flags)
 		LINK_DIRS ${LINK_DIRS}
 		DEFINITIONS ${DEFINITIONS})
 
-        set(PX4_BASE )
         set(added_include_dirs
 		src/modules/systemlib
-                src/platforms/posix/include
-                mavlink/include/mavlink
-                )
+		src/platforms/posix/include
+		mavlink/include/mavlink
+		)
 
 # This block sets added_definitions and added_cxx_flags.
 if(UNIX AND APPLE)
-        set(added_definitions
+	set(added_definitions
 		-D__PX4_POSIX
 		-D__PX4_DARWIN
 		-D__DF_DARWIN
 		-Dnoreturn_function=__attribute__\(\(noreturn\)\)
-                )
+		)
 
 	set(added_cxx_flags)
 
@@ -203,12 +198,12 @@ if(UNIX AND APPLE)
 
 else()
 
-        set(added_definitions
+	set(added_definitions
 		-D__PX4_POSIX
 		-D__PX4_LINUX
 		-D__DF_LINUX
 		-Dnoreturn_function=__attribute__\(\(noreturn\)\)
-                )
+		)
 
 	# Use -pthread For linux/g++.
 	set(added_cxx_flags

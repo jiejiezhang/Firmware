@@ -458,7 +458,6 @@ function(px4_add_common_flags)
 		${PX4_BINARY_DIR}
 		${PX4_BINARY_DIR}/src
 		${PX4_BINARY_DIR}/src/modules
-		${PX4_SOURCE_DIR}/mavlink/include/mavlink
 		${PX4_SOURCE_DIR}/src
 		${PX4_SOURCE_DIR}/src/drivers/boards/${BOARD}
 		${PX4_SOURCE_DIR}/src/include
@@ -479,14 +478,6 @@ function(px4_add_common_flags)
 		-DCONFIG_ARCH_BOARD_${board_config}
 		-D__STDC_FORMAT_MACROS
 		)
-
-	if (NOT (APPLE AND (${CMAKE_C_COMPILER_ID} MATCHES ".*Clang.*")))
-		set(added_exe_linker_flags
-			-Wl,--warn-common
-			-Wl,--gc-sections
-			#,--print-gc-sections
-			)
-	endif()
 
 	# output
 	foreach(var ${inout_vars})
