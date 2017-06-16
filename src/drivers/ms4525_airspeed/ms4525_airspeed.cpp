@@ -131,7 +131,7 @@ protected:
 /*
  * Driver 'main' command.
  */
-extern "C" __EXPORT int meas_airspeed_main(int argc, char *argv[]);
+extern "C" __EXPORT int ms4525_airspeed_main(int argc, char *argv[]);
 
 MEASAirspeed::MEASAirspeed(int bus, int address, const char *path) : Airspeed(bus, address,
 			CONVERSION_INTERVAL, path),
@@ -589,7 +589,7 @@ meas_airspeed_usage()
 }
 
 int
-meas_airspeed_main(int argc, char *argv[])
+ms4525_airspeed_main(int argc, char *argv[])
 {
 	int i2c_bus = PX4_I2C_BUS_DEFAULT;
 

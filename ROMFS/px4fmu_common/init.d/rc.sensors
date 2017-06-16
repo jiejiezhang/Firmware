@@ -153,7 +153,11 @@ then
 		then
 		fi
 
-		if meas_airspeed start -b 2
+		if ms4525_airspeed start -b 2
+		then
+		fi
+
+		if ms5525_airspeed start -b 2
 		then
 		fi
 
@@ -400,7 +404,11 @@ then
 	fi
 
 	# Possible external airspeed sensor
-	if meas_airspeed start -b 2
+	if ms4525_airspeed start -b 2
+	then
+	fi
+
+	if ms5525_airspeed start -b 2
 	then
 	fi
 
@@ -420,7 +428,7 @@ if ms5525_airspeed start
 then
 fi
 
-if meas_airspeed start
+if ms4525_airspeed start
 then
 fi
 
