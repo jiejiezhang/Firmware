@@ -156,6 +156,12 @@ void FlightTasks::_updateCommand()
 	struct vehicle_command_s command;
 	orb_copy(ORB_ID(vehicle_command), _sub_vehicle_command, &command);
 
+	//TODO
+	if (command.command == vehicle_command_s::VEHICLE_CMD_DO_SET_MODE) {
+		command.command = vehicle_command_s::VEHICLE_CMD_DO_ORBIT;
+
+	}
+
 	// check what command it is
 	FlightTaskIndex desired_task = switchVehicleCommand(command.command);
 

@@ -46,10 +46,14 @@ FlightTaskOrbit::FlightTaskOrbit()
 	_sticks_data_required = false;
 }
 
-bool FlightTaskOrbit::applyCommandParameters(const vehicle_command_s &command)
+bool FlightTaskOrbit::applyCommandParameters(vehicle_command_s &command)
 {
 	bool ret = true;
 	bool clockwise = _v > 0;
+
+	//TODO
+	command.param1 = 5.f;
+	command.param2 = 2.f;
 
 	// commanded radius
 	if (PX4_ISFINITE(command.param1)) {
@@ -62,25 +66,6 @@ bool FlightTaskOrbit::applyCommandParameters(const vehicle_command_s &command)
 	if (PX4_ISFINITE(command.param2)) {
 		const float v = command.param2 * (clockwise ? 1.f : -1.f);
 		ret = ret && setVelocity(v);
-	}
-
-	// TODO: apply x,y / z independently in geo library
-	// commanded center coordinates
-	// if(PX4_ISFINITE(command.param5) && PX4_ISFINITE(command.param6)) {
-	// 	map_projection_global_project(command.param5, command.param6, &_center(0), &_center(1));
-	// }
-
-	// commanded altitude
-	// if(PX4_ISFINITE(command.param7)) {
-	// 	_position_setpoint(2) = gl_ref.alt - command.param7;
-	// }
-
-	if (PX4_ISFINITE(command.param5) && PX4_ISFINITE(command.param6) && PX4_ISFINITE(command.param7)) {
-		if (globallocalconverter_tolocal(command.param5, command.param6, command.param7, &_center(0), &_center(1),
-						 &_position_setpoint(2))) {
-			// global to local conversion failed
-			ret = false;
-		}
 	}
 
 	return ret;
