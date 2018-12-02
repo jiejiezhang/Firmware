@@ -556,34 +556,35 @@ Commander::handle_command(vehicle_status_s *status_local, const vehicle_command_
 //	PX4_INFO("cmd.command: %d", cmd.command);
 	/* request to set different system mode */
 	switch (cmd.command) {
-//	case vehicle_command_s::VEHICLE_CMD_DO_REPOSITION: {
-//
-//		// Just switch the flight mode here, the navigator takes care of
-//		// doing something sensible with the coordinates. Its designed
-//		// to not require navigator and command to receive / process
-//		// the data at the exact same time.
-//
-//		// Check if a mode switch had been requested
-//		if ((((uint32_t)cmd.param2) & 1) > 0) {
-//			transition_result_t main_ret = main_state_transition(*status_local, commander_state_s::MAIN_STATE_AUTO_LOITER, status_flags, &internal_state);
-//
-//			if ((main_ret != TRANSITION_DENIED)) {
-//				cmd_result = vehicle_command_s::VEHICLE_CMD_RESULT_ACCEPTED;
-//
-//			} else {
-//				cmd_result = vehicle_command_s::VEHICLE_CMD_RESULT_TEMPORARILY_REJECTED;
-//				mavlink_log_critical(&mavlink_log_pub, "Rejecting reposition command");
-//			}
-//		} else {
-//			cmd_result = vehicle_command_s::VEHICLE_CMD_RESULT_ACCEPTED;
-//		}
-//	}
-//	break;
-	case vehicle_command_s::VEHICLE_CMD_DO_SET_MODE: {
-		main_state_transition(*status_local, commander_state_s::MAIN_STATE_ORBIT, status_flags, &internal_state);
+	case vehicle_command_s::VEHICLE_CMD_DO_REPOSITION: {
 
+		// Just switch the flight mode here, the navigator takes care of
+		// doing something sensible with the coordinates. Its designed
+		// to not require navigator and command to receive / process
+		// the data at the exact same time.
+
+		// Check if a mode switch had been requested
+		if ((((uint32_t)cmd.param2) & 1) > 0) {
+			transition_result_t main_ret = main_state_transition(*status_local, commander_state_s::MAIN_STATE_AUTO_LOITER, status_flags, &internal_state);
+
+			if ((main_ret != TRANSITION_DENIED)) {
+				cmd_result = vehicle_command_s::VEHICLE_CMD_RESULT_ACCEPTED;
+
+			} else {
+				cmd_result = vehicle_command_s::VEHICLE_CMD_RESULT_TEMPORARILY_REJECTED;
+				mavlink_log_critical(&mavlink_log_pub, "Rejecting reposition command");
+			}
+		} else {
+			cmd_result = vehicle_command_s::VEHICLE_CMD_RESULT_ACCEPTED;
+		}
 	}
 	break;
+	case vehicle_command_s::VEHICLE_CMD_DO_SET_MODE: {
+		main_state_transition(*status_local, commander_state_s::MAIN_STATE_ORBIT, status_flags, &internal_state);
+		cmd_result = vehicle_command_s::VEHICLE_CMD_RESULT_ACCEPTED;
+	}
+	break;
+//TODO
 //			uint8_t base_mode = (uint8_t)cmd.param1;
 //			uint8_t custom_main_mode = (uint8_t)cmd.param2;
 //			uint8_t custom_sub_mode = (uint8_t)cmd.param3;
@@ -977,11 +978,6 @@ Commander::handle_command(vehicle_status_s *status_local, const vehicle_command_
 		}
 		break;
 
-	case vehicle_command_s::VEHICLE_CMD_DO_ORBIT:
-		// Switch to orbit state and let the orbit task handle the command further
-		main_state_transition(*status_local, commander_state_s::MAIN_STATE_ORBIT, status_flags, &internal_state);
-		break;
-
 	case vehicle_command_s::VEHICLE_CMD_CUSTOM_0:
 	case vehicle_command_s::VEHICLE_CMD_CUSTOM_1:
 	case vehicle_command_s::VEHICLE_CMD_CUSTOM_2:
@@ -1013,7 +1009,7 @@ Commander::handle_command(vehicle_status_s *status_local, const vehicle_command_
 	case vehicle_command_s::VEHICLE_CMD_DO_SET_ROI_LOCATION:
 	case vehicle_command_s::VEHICLE_CMD_DO_SET_ROI_WPNEXT_OFFSET:
 	case vehicle_command_s::VEHICLE_CMD_DO_SET_ROI_NONE:
-	case vehicle_command_s::VEHICLE_CMD_DO_REPOSITION:
+	//case vehicle_command_s::VEHICLE_CMD_DO_ORBIT:
 		/* ignore commands that are handled by other parts of the system */
 		break;
 
