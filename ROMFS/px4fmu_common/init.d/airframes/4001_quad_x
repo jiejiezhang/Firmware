@@ -22,6 +22,7 @@
 
 sh /etc/init.d/rc.mc_defaults
 
-set MIXER quad_x
+set MIXER_AUX quad_x
+set MIXER wator_bump
 
 set PWM_OUT 1234
